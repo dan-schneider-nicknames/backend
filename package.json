@@ -1,0 +1,22 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Dan Schneider n.n. generator",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dan-schneider-nicknames/backend.git"
+  },
+  "author": "Jacob Shomali & Bradford Meziere",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dan-schneider-nicknames/backend/issues"
+  },
+  "homepage": "https://github.com/dan-schneider-nicknames/backend#readme",
+  "dependencies": {
+    "mongoose": "^6.0.14"
+  }
+}
