@@ -1,33 +1,33 @@
-require('dotenv').config()
-
-if (process.env.DATABASE_URL) {
-  pg.defaults.ssl = { rejectUnauthorized: false }
-}
-
-const sharedConfig = {
+// Update with your config settings.
+const shared = {
   client: 'sqlite3',
-  migrations: { directory: './data/migrations' },
-  seeds: { directory: './data/seeds' },
+  connection: {
+    filename: './data/sqlite3.db'
+  },
+  migrations: {
+    directory: "./data/migrations"
+  },
+  seeds: {
+    directory: "./data/seeds"
+  },
+  pool: {
+    min: 2,
+    max: 10
+  },
 }
 
 module.exports = {
+
   development: {
-    ...sharedConfig,
-    connection: {
-        filename: "./data/db3"
-    },
+    ...shared
   },
-  testing: {
-    ...sharedConfig,
-    connection: {
-        filename: "./data/db3"
-    },
+
+  staging: {
+    ...shared
   },
+
   production: {
-    ...sharedConfig,
-    connection: {
-        filename: "./data/db3"
-    },
-    pool: { min: 2, max: 10 },
-  },
-}
+    ...shared
+  }
+
+};
