@@ -12,7 +12,7 @@ exports.seed = function(knex) {
         {
           user_id: 2, 
           username: 'bradford', 
-          email: "fakeEmail@fake.com",
+          email: "fakerEmail@fake.com",
           password: "password2" // to be replaced with hash later
         },
       ]);

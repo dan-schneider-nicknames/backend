@@ -17,17 +17,13 @@ const shared = {
 }
 
 module.exports = {
-
   development: {
     ...shared
   },
-
   staging: {
     ...shared
   },
-
   production: {
     ...shared
   }
-
 };
