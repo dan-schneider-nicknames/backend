@@ -15,3 +15,6 @@ const signupSchema = new GraphQLObjectType({
             resolve: (parent, args) => {
                 user.addUser(args);
             }
+        }
+    })
+});
