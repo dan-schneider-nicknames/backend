@@ -8,9 +8,8 @@ const schema = new GraphQLSchema({
         fields: () => ({
             nicknames: {
                 type: new GraphQLList(NicknameType),
-                // resolve: () => {
-                //     return ["Dan", "Schneider"];
-                // },
+                resolve: () => {
+                },
             },
         }),
     }),

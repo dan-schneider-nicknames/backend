@@ -1,10 +1,7 @@
-
-const NICKNAMES = "nicknames"
-const USERS = "users"
-const LIKES = "likes"
+const { nicknames, users, likes } = require("../tableNames")
 
 exports.up = knex => {
-  return knex.schema.createTable(USERS, table => {
+  return knex.schema.createTable(users, table => {
     table.increments("user_id")
     table.string("username")
         .notNullable()
@@ -15,7 +12,7 @@ exports.up = knex => {
     table.string("password")
         .notNullable()
         .unique()
-  }).createTable(NICKNAMES, table => {
+  }).createTable(nicknames, table => {
     table.increments("nickname_id")
     table.string("nickname")
         .notNullable()
@@ -24,24 +21,24 @@ exports.up = knex => {
         .unsigned()
         .notNullable()
         .references("user_id")
-        .inTable(USERS)
-  }).createTable(LIKES, table => {
+        .inTable(users)
+  }).createTable(likes, table => {
     table.increments("like_id")
     table.integer("user_id")
         .unsigned()
         .notNullable()
         .references("user_id")
-        .inTable(USERS)
+        .inTable(users)
     table.integer("nickname_id")
         .unsigned()
         .notNullable()
         .references("nickname_id")
-        .inTable(NICKNAMES)
+        .inTable(nicknames)
   })
 };
 
 exports.down = knex => {
-  return knex.schema.dropTableIfExists(LIKES)
-    .dropTableIfExists(NICKNAMES)
-    .dropTableIfExists(USERS)
+  return knex.schema.dropTableIfExists(likes)
+    .dropTableIfExists(nicknames)
+    .dropTableIfExists(users)
 };
