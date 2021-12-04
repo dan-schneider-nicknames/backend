@@ -7,11 +7,16 @@ const addUser = (user) => {
     });
 }
 
+const getUserById = user_id => {
+
+}
+
 const verifyUser = () => {
 
 }
 
 module.exports = {
     addUser,
+    getUserById,
     verifyUser
 }
