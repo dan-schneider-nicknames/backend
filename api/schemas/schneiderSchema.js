@@ -1,4 +1,4 @@
-const { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLList } = require("graphql");
+const { GraphQLSchema, GraphQLObjectType, GraphQLList } = require("graphql");
 const { NicknameType } = require("./types")
 
 const schema = new GraphQLSchema({
