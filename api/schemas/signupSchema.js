@@ -2,28 +2,19 @@ const {
   GraphQLObjectType,
   GraphQLString,
   GraphQLSchema,
-  GraphQLInt,
   GraphQLNonNull
 } = require("graphql");
 const bcrypt = require("bcryptjs");
 const user = require("../users/modal");
+const { UserType } = require("./types");
 
-const userType = new GraphQLObjectType({
-  name: "user",
-  fields: () => ({
-    user_id: { type: GraphQLInt },
-    email: { type: GraphQLString },
-    password: { type: GraphQLString },
-    username: { type: GraphQLString },
-  }),
-});
 const signupSchema = new GraphQLSchema({
   name: "UserSchema",
   query: new GraphQLObjectType({
     name: "userQuery",
     fields: () => ({
       user: {
-        type: userType,
+        type: UserType,
       },
     }),
   }),
@@ -32,7 +23,7 @@ const signupSchema = new GraphQLSchema({
     fields: () => ({
       addUser: {
         name: "addUser",
-        type: userType,
+        type: UserType,
         args: {
           email: { type: new GraphQLNonNull(GraphQLString) },
           password: { type: new GraphQLNonNull(GraphQLString) },

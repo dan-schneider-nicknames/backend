@@ -1,13 +1,5 @@
 const { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLList } = require("graphql");
-
-const nicknameType = new GraphQLObjectType({
-    name: "nickname",
-    fields: () => ({
-        nickname: { type: GraphQLString },
-        likes: { type:  GraphQLInt },
-        creator: { type: GraphQLString } 
-    })
-});
+const { NicknameType } = require("./types")
 
 const schema = new GraphQLSchema({
     name: "RootQueryType",
@@ -15,7 +7,7 @@ const schema = new GraphQLSchema({
         name: "getNickname",
         fields: () => ({
             nicknames: {
-                type: new GraphQLList(nicknameType),
+                type: new GraphQLList(NicknameType),
                 // resolve: () => {
                 //     return ["Dan", "Schneider"];
                 // },
