@@ -3,10 +3,10 @@ const {
   GraphQLString,
   GraphQLSchema,
   GraphQLInt,
+  GraphQLNonNull
 } = require("graphql");
 const bcrypt = require("bcryptjs");
 const user = require("../users/modal");
-const { isPlainObject } = require("lodash");
 
 const userType = new GraphQLObjectType({
   name: "user",
@@ -34,9 +34,9 @@ const signupSchema = new GraphQLSchema({
         name: "addUser",
         type: userType,
         args: {
-          email: { type: GraphQLString },
-          password: { type: GraphQLString },
-          username: { type: GraphQLString },
+          email: { type: new GraphQLNonNull(GraphQLString) },
+          password: { type: new GraphQLNonNull(GraphQLString) },
+          username: { type: new GraphQLNonNull(GraphQLString) },
         },
         resolve: async (parent, args) => {
           const hash = bcrypt.hashSync(args.password, 10);
