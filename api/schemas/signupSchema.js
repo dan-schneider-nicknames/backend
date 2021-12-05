@@ -38,7 +38,6 @@ const signupSchema = new GraphQLSchema({
       },
     }),
   }),
-  query : user.getUsers,
 });
 
 module.exports = signupSchema;

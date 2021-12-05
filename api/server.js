@@ -1,7 +1,7 @@
 const { graphqlHTTP } = require("express-graphql");
 const app = require("express")();
 const signupSchema = require("./schemas/signupSchema");
-const schneiderSchema = require("./schemas/schneiderSchema");
+const nicknameSchema = require("./schemas/schneiderSchema");
 const schema = require("./schemas/schneiderSchema")
 
 app.use("/graphql", graphqlHTTP({
@@ -17,7 +17,7 @@ app.use('/', graphqlHTTP({
 );
 
 app.use('/schneider', graphqlHTTP({
-    schema: schneiderSchema, 
+    schema: nicknameSchema, 
     graphiql: true,
     })
 );
