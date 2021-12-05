@@ -2,7 +2,8 @@ const {
   GraphQLObjectType,
   GraphQLString,
   GraphQLSchema,
-  GraphQLNonNull
+  GraphQLNonNull,
+  GraphQLList,
 } = require("graphql");
 const bcrypt = require("bcryptjs");
 const user = require("../users/modal");
@@ -37,6 +38,7 @@ const signupSchema = new GraphQLSchema({
       },
     }),
   }),
+  query : user.getUsers,
 });
 
 module.exports = signupSchema;

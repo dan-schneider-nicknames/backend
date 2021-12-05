@@ -18,12 +18,31 @@ const getNicknameLikes = async nickname_id => {
     }
 }
 
-const addNickname = () => {
-    
+const getNicknameById = nickname_id => {
+    return db(nicknames)
+    .where({ nickname_id })
+    .first()
 }
+
+const addNickname = (nickname) => {
+    return db(nicknames)
+    .insert(nickname)
+    .then(([nickname_id]) => {
+        return getNicknameById(nickname_id)
+    })
+}
+
+const deleteNickname = nickname_id => {
+    return db(nicknames)
+    .where({ nickname_id })
+    .del()
+}
+
 
 module.exports = {
     getUserNicknames,
     getNicknameLikes,
-    addNickname
+    getNicknameById,
+    addNickname,
+    deleteNickname
 }

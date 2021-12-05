@@ -1,6 +1,10 @@
 const db = require("../../data/db-config")
 const { users } = require("../../data/tableNames")
 
+const getUsers = () => {
+    return db(users)
+}
+
 const addUser = user => {
     return db(users)
         .insert(user)
@@ -20,6 +24,7 @@ const verifyUser = () => {
 }
 
 module.exports = {
+    getUsers,
     addUser,
     getUserById,
     verifyUser
