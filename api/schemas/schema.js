@@ -19,7 +19,8 @@ const schema = new GraphQLSchema({
     fields: () => ({
       nicknames: {
         type: new GraphQLList(NicknameType),
-        resolve: async () => {
+        resolve: async (parent, args, { user }) => {
+          if (!user) throw new Error("not authorized")
           return await Nicknames.getNicknames()
         }
       },
