@@ -19,13 +19,13 @@ const getUserById = user_id => {
         .first()
 }
 
-const verifyUser = () => {
-
+const getUserByUsername = username => {
+    return db(users).where({ username }).first()
 }
 
 module.exports = {
     getUsers,
     addUser,
     getUserById,
-    verifyUser
+    getUserByUsername
 }

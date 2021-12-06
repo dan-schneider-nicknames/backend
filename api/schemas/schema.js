@@ -6,8 +6,10 @@ const {
   GraphQLID,
   GraphQLList,
 } = require("graphql");
+const { tokenBuilder } = require("../middleware/tokenbuilder");
 const { NicknameType, UserType } = require("./types");
-// const nicknames = require("../nicknames/modal");
+const User = require("../modals/users")
+const bcrypt = require("bcryptjs")
 
 const schema = new GraphQLSchema({
   name: "SchneiderSchema",
@@ -60,7 +62,7 @@ const schema = new GraphQLSchema({
       },
       addUser: {
         name: "addUser",
-        type: UserType,
+        type: GraphQLString,
         args: {
           email: { type: new GraphQLNonNull(GraphQLString) },
           password: { type: new GraphQLNonNull(GraphQLString) },
@@ -68,10 +70,30 @@ const schema = new GraphQLSchema({
         },
         resolve: async (parent, args) => {
           const hash = bcrypt.hashSync(args.password, 10);
-          const newUser = await user.addUser({ ...args, password: hash });
-          return newUser;
+          const newUser = await User.addUser({ ...args, password: hash });
+          const token = tokenBuilder(newUser)
+          return token;
         },
       },
+      login: {
+        name: "login",
+        type: GraphQLString,
+        args: {
+          password: { type: new GraphQLNonNull(GraphQLString) },
+          username: { type: new GraphQLNonNull(GraphQLString) },
+        },
+        resolve: async (parent, args) => {
+          const { password, username } = args
+          const user = await User.getUserByUsername(username)
+          console.log(user)
+          const { password: hashedPassword } = user
+          if (bcrypt.compareSync(password, hashedPassword)) {
+            return tokenBuilder(user)
+          } else {
+            throw new Error("invalid credentials")
+          }
+        }
+      }
     }),
   }),
 });
