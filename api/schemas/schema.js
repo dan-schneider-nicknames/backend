@@ -9,7 +9,7 @@ const {
 const { NicknameType, UserType } = require("./types");
 // const nicknames = require("../nicknames/modal");
 
-const nicknameSchema = new GraphQLSchema({
+const schema = new GraphQLSchema({
   name: "SchneiderSchema",
   query: new GraphQLObjectType({
     name: "schneiderQuery",
@@ -76,4 +76,4 @@ const nicknameSchema = new GraphQLSchema({
   }),
 });
 
-module.exports = nicknameSchema;
+module.exports = schema;
