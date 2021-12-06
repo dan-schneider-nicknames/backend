@@ -1,25 +1,25 @@
 const { graphqlHTTP } = require("express-graphql");
-const app = require("express")();
-const signupSchema = require("./schemas/signupSchema");
-const nicknameSchema = require("./schemas/schneiderSchema");
-const schema = require("./schemas/schneiderSchema")
+const express = require("express");
+const schema = require("./schemas/schema")
+const cors = require("cors")
+const helmet = require("helmet");
+const app = express()
+const checkToken = require("./middleware/checkToken")
 
-app.use("/graphql", graphqlHTTP({
-        schema: schema,
+app.use(helmet())
+app.use(cors())
+app.use(express.json())
+
+app.use(checkToken)
+
+app.use("/graphql", graphqlHTTP(req => ({
+        schema,
         graphiql: true,
-    })
+        context: {
+            user: req.user
+        }
+    }))
 );
 
-app.use('/', graphqlHTTP({
-    schema: signupSchema,
-    graphiql: true,
-    })
-);
-
-app.use('/schneider', graphqlHTTP({
-    schema: nicknameSchema, 
-    graphiql: true,
-    })
-);
 
 module.exports = app
