@@ -1,5 +1,5 @@
 const { GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLID } = require("graphql");
-const { getNicknameLikes } = require("../nicknames/modal")
+const { getNicknameLikes, getUserNicknames } = require("../modals/nicknames")
 
 const UserType = new GraphQLObjectType({
     name: "user",
