@@ -1,5 +1,6 @@
 const { GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLID } = require("graphql");
-const { getNicknameLikes } = require("../nicknames/modal")
+const Nicknames = require("../modals/nicknames")
+const Users = require("../modals/users")
 
 const UserType = new GraphQLObjectType({
     name: "user",
@@ -11,7 +12,7 @@ const UserType = new GraphQLObjectType({
         nicknames: {
             type: NicknameType,
             resolve: (parent, args) => {    
-                return getUserNicknames(parent.user_id)
+                return Nicknames.getUserNicknames(parent.user_id)
             }
         }
     }),
@@ -20,18 +21,19 @@ const UserType = new GraphQLObjectType({
 const NicknameType = new GraphQLObjectType({
     name: "nickname",
     fields: () => ({
+        nickname_id: { type: GraphQLID },
         user_id: { type: GraphQLID },
         nickname: { type: GraphQLString },
         likes: { 
             type: GraphQLInt,
-            resolve: (parent, args) => {
-                return getNicknameLikes(parent.nickname_id)
+            resolve: parent => {
+                return Nicknames.getNicknameLikes(parent.nickname_id)
             }
         },
         creator: { 
             type: UserType,
-            resolve: (parent, args) => {
-                // function that returns user
+            resolve: ({ user_id }) => {
+                return Users.getUserById(user_id)
             } 
         } 
     })
