@@ -9,6 +9,8 @@ const getUserNicknames = async user_id => {
     }
 }
 
+const getNicknames = () => db(nicknames)
+
 const getNicknameLikes = async nickname_id => {
     try {
         const { length } = await db(likes).where({ nickname_id })
@@ -44,5 +46,6 @@ module.exports = {
     getNicknameLikes,
     getNicknameById,
     addNickname,
-    deleteNickname
+    deleteNickname,
+    getNicknames
 }

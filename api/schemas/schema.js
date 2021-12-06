@@ -9,6 +9,7 @@ const {
 const { tokenBuilder } = require("../middleware/tokenbuilder");
 const { NicknameType, UserType } = require("./types");
 const User = require("../modals/users")
+const Nicknames = require("../modals/nicknames")
 const bcrypt = require("bcryptjs")
 
 const schema = new GraphQLSchema({
@@ -18,8 +19,8 @@ const schema = new GraphQLSchema({
     fields: () => ({
       nicknames: {
         type: new GraphQLList(NicknameType),
-        resolve: (parent, args, { user }) => {
-          // return nicknames.getUserNicknames()
+        resolve: async () => {
+          return await Nicknames.getNicknames()
         }
       },
     }),
@@ -35,7 +36,7 @@ const schema = new GraphQLSchema({
           user_id: { type: new GraphQLNonNull(GraphQLID) },
         },
         resolve: (parent, args) => {
-          return nickname.addNickname(args);
+          return Nicknames.addNickname(args);
         },
       },
       updateNickname: {
@@ -47,7 +48,7 @@ const schema = new GraphQLSchema({
           user_id: { type: GraphQLID },
         },
         resolve: (parent, args) => {
-          return nickname.updateNickname(args);
+          return Nicknames.updateNickname(args);
         },
       },
       deleteNickname: {
@@ -57,7 +58,7 @@ const schema = new GraphQLSchema({
           nickname_id: { type: GraphQLID },
         },
         resolve: (parent, args) => {
-          return nickname.deleteNickname(args);
+          return Nicknames.deleteNickname(args);
         },
       },
       addUser: {
