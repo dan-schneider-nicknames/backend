@@ -11,13 +11,12 @@ app.use(express.json())
 app.use(checkToken)
 
 app.use("/", graphqlHTTP(req => ({
-        schema,
-        graphiql: true,
-        context: {
-            user: req.user
-        }
-    }))
-);
+    schema,
+    graphiql: true,
+    context: {
+        user: req.user
+    }
+})));
 
 
 module.exports = app
