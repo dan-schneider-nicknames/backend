@@ -29,7 +29,6 @@ const userMutations = {
         resolve: async (parent, args) => {
             const { password, username } = args
             const user = await User.getUserByUsername(username)
-            console.log(user)
             const { password: hashedPassword } = user
             if (bcrypt.compareSync(password, hashedPassword)) {
                 return tokenBuilder(user)

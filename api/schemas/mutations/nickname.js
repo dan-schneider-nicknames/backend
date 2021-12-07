@@ -34,7 +34,7 @@ const nicknameMutations = {
     name: "deleteNickname",
     type: NicknameType,
     args: {
-      nickname_id: { type: GraphQLID },
+      nickname_id: { type: new GraphQLNonNull(GraphQLID) },
     },
     resolve: (parent, args) => {
       return Nicknames.deleteNickname(args);

@@ -1,5 +1,5 @@
 const { GraphQLObjectType, GraphQLList } = require("graphql")
-const { NicknameType } = require("./types")
+const { NicknameType, UserType } = require("./types")
 const Nicknames = require("../modals/nicknames")
 
 const query = new GraphQLObjectType({
@@ -12,6 +12,12 @@ const query = new GraphQLObjectType({
                 return await Nicknames.getNicknames()
             }
         },
+        user: {
+            type: UserType,
+            resolve: async (parent, args, { user }) => {
+                return user
+            }
+        }
     }),
 })
 
