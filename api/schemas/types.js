@@ -30,7 +30,7 @@ const NicknameType = new GraphQLObjectType({
                 return Nicknames.getNicknameLikes(parent.nickname_id)
             }
         },
-        creator: { 
+        user: { 
             type: UserType,
             resolve: ({ user_id }) => {
                 return Users.getUserById(user_id)
