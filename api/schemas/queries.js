@@ -8,7 +8,7 @@ const query = new GraphQLObjectType({
         nicknames: {
             type: new GraphQLList(NicknameType),
             resolve: async (parent, args, { user }) => {
-                if (!user) throw new Error("not authorized")
+                // if (!user) throw new Error("not authorized")
                 return await Nicknames.getNicknames()
             }
         },

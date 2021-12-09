@@ -1,10 +1,12 @@
 const {
   GraphQLNonNull,
   GraphQLString,
-  GraphQLID
+  GraphQLID,
+  GraphQLInt
 } = require("graphql");
 const Nicknames = require('../../modals/nicknames')
 const { NicknameType } = require("../types")
+const Likes = require("../../modals/likes")
 
 const nicknameMutations = {
   addNickname: {
@@ -12,10 +14,10 @@ const nicknameMutations = {
     type: NicknameType,
     args: {
       nickname: { type: new GraphQLNonNull(GraphQLString) },
-      user_id: { type: new GraphQLNonNull(GraphQLID) },
+      // user_id: { type: new GraphQLNonNull(GraphQLID) },
     },
-    resolve: (parent, args) => {
-      return Nicknames.addNickname(args);
+    resolve: (parent, { nickname }, { user: { subject: user_id } }) => {
+      return Nicknames.addNickname({ nickname, user_id });
     },
   },
   updateNickname: {
@@ -40,6 +42,16 @@ const nicknameMutations = {
       return Nicknames.deleteNickname(args);
     },
   },
+  likeNickname: {
+    name: "addLike",
+    type: GraphQLInt,
+    args: {
+      nickname_id: { type: new GraphQLNonNull(GraphQLID) }
+    },
+    resolve: (parent, { nickname_id }, { user: { subject: user_id } }) => {
+      return Likes.likeNickname(nickname_id, user_id)
+    }
+  }
 }
 
 module.exports = nicknameMutations
