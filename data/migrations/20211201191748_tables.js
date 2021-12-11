@@ -11,7 +11,6 @@ exports.up = knex => {
         .unique()
     table.string("password")
         .notNullable()
-        .unique()
   }).createTable(nicknames, table => {
     table.increments("nickname_id")
     table.string("nickname")
