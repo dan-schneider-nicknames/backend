@@ -37,4 +37,4 @@ const userMutations = {
     }
 }
 
-module.exports = userMutations
+module.exports = userMutations;
