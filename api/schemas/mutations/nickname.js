@@ -14,7 +14,7 @@ const nicknameMutations = {
       nickname: { type: new GraphQLNonNull(GraphQLString) },
       // user_id: { type: new GraphQLNonNull(GraphQLID) },
     },
-    resolve: (parent, { nickname }, { user: { subject: user_id }, modals }) => {
+    resolve: (parent, { nickname }, { user: { user_id }, modals }) => {
       return modals.Nicknames.addNickname({ nickname, user_id });
     },
   },
@@ -46,7 +46,7 @@ const nicknameMutations = {
     args: {
       nickname_id: { type: new GraphQLNonNull(GraphQLID) }
     },
-    resolve: (parent, { nickname_id }, { user: { subject: user_id }, modals }) => {
+    resolve: (parent, { nickname_id }, { user: { user_id }, modals }) => {
       return modals.Likes.likeNickname(nickname_id, user_id)
     }
   }

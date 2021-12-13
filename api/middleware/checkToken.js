@@ -12,7 +12,12 @@ module.exports = (req, res, next) => {
                 if (err) {
                     next()
                 } else {
-                    req.user = decoded
+                    const user = {
+                        username: decoded.username,
+                        password: decoded.password,
+                        user_id: decoded.subject,
+                    }
+                    req.user = user
                     next()
                 }
             }

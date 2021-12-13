@@ -19,7 +19,7 @@ const query = new GraphQLObjectType({
                 },
             },
             resolve: async (parent, { username }, { user, modals }) => {
-                // if (!username) return user
+                if (!username) return user
                 return await modals.Users.getUserByUsername(username)
             }
         },
