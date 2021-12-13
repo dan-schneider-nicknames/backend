@@ -4,9 +4,7 @@ const {
   GraphQLID,
   GraphQLInt
 } = require("graphql");
-const Nicknames = require('../../modals/nicknames')
 const { NicknameType } = require("../types")
-const Likes = require("../../modals/likes")
 
 const nicknameMutations = {
   addNickname: {
@@ -16,8 +14,8 @@ const nicknameMutations = {
       nickname: { type: new GraphQLNonNull(GraphQLString) },
       // user_id: { type: new GraphQLNonNull(GraphQLID) },
     },
-    resolve: (parent, { nickname }, { user: { subject: user_id } }) => {
-      return Nicknames.addNickname({ nickname, user_id });
+    resolve: (parent, { nickname }, { user: { subject: user_id }, modals }) => {
+      return modals.Nicknames.addNickname({ nickname, user_id });
     },
   },
   updateNickname: {
@@ -28,8 +26,8 @@ const nicknameMutations = {
       nickname: { type: GraphQLString },
       user_id: { type: GraphQLID },
     },
-    resolve: (parent, args) => {
-      return Nicknames.updateNickname(args);
+    resolve: (parent, args, { modals }) => {
+      return modals.Nicknames.updateNickname(args);
     },
   },
   deleteNickname: {
@@ -38,8 +36,8 @@ const nicknameMutations = {
     args: {
       nickname_id: { type: new GraphQLNonNull(GraphQLID) },
     },
-    resolve: (parent, args) => {
-      return Nicknames.deleteNickname(args);
+    resolve: (parent, args, { modals }) => {
+      return modals.Nicknames.deleteNickname(args);
     },
   },
   likeNickname: {
@@ -48,8 +46,8 @@ const nicknameMutations = {
     args: {
       nickname_id: { type: new GraphQLNonNull(GraphQLID) }
     },
-    resolve: (parent, { nickname_id }, { user: { subject: user_id } }) => {
-      return Likes.likeNickname(nickname_id, user_id)
+    resolve: (parent, { nickname_id }, { user: { subject: user_id }, modals }) => {
+      return modals.Likes.likeNickname(nickname_id, user_id)
     }
   }
 }

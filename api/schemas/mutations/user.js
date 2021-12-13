@@ -1,6 +1,5 @@
 const { GraphQLNonNull, GraphQLString } = require("graphql");
 const { tokenBuilder } = require("../../middleware/tokenbuilder");
-const User = require("../../modals/users")
 const bcrypt = require("bcryptjs")
 
 const userMutations = {
@@ -12,11 +11,10 @@ const userMutations = {
             password: { type: new GraphQLNonNull(GraphQLString) },
             username: { type: new GraphQLNonNull(GraphQLString) },
         },
-        resolve: async (parent, args) => {
+        resolve: async (parent, args, { modals }) => {
             const hash = bcrypt.hashSync(args.password, 10);
-            const newUser = await User.addUser({ ...args, password: hash });
-            const token = tokenBuilder(newUser)
-            return token;
+            const newUser = await modals.Users.addUser({ ...args, password: hash });
+            return tokenBuilder(newUser)
         },
     },
     login: {
@@ -26,9 +24,9 @@ const userMutations = {
             password: { type: new GraphQLNonNull(GraphQLString) },
             username: { type: new GraphQLNonNull(GraphQLString) },
         },
-        resolve: async (parent, args) => {
+        resolve: async (parent, args, { modals }) => {
             const { password, username } = args
-            const user = await User.getUserByUsername(username)
+            const user = await modals.Users.getUserByUsername(username)
             const { password: hashedPassword } = user
             if (bcrypt.compareSync(password, hashedPassword)) {
                 return tokenBuilder(user)

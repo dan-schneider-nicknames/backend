@@ -1,4 +1,4 @@
-const { GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLID } = require("graphql");
+const { GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLID, GraphQLList } = require("graphql");
 const Nicknames = require("../modals/nicknames")
 const Users = require("../modals/users")
 
@@ -10,7 +10,7 @@ const UserType = new GraphQLObjectType({
         password: { type: GraphQLString },
         username: { type: GraphQLString },
         nicknames: {
-            type: NicknameType,
+            type: new GraphQLList(NicknameType),
             resolve: (parent, args) => {    
                 return Nicknames.getUserNicknames(parent.user_id)
             }
