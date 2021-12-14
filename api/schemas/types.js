@@ -51,7 +51,7 @@ const NicknameType = new GraphQLObjectType({
         args,
         { user: { user_id }, modals: { Likes } }
       ) => {
-        const liked = await Likes.getLike({ nickname_id, user_id });
+        const [liked] = await Likes.getLike({ nickname_id, user_id });
         return liked ? true : false;
       },
     },
