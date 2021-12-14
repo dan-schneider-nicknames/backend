@@ -17,5 +17,6 @@ const likeNickname = (nickname_id, user_id) => {
 };
 
 module.exports = {
-  likeNickname
+  likeNickname,
+  getLike
 };
