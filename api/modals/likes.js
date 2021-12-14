@@ -1,35 +1,22 @@
-const db = require("../../data/db-config")
-const { likes } = require("../../data/tableNames")
+const db = require("../../data/db-config");
+const { likes } = require("../../data/tableNames");
 
-const getLike = async like => {
-    return await db(likes)
-        .where(like)
-} 
+const getLike = (like) => {
+  return db(likes).where(like);
+};
 
-const likeNickname = async (nickname_id, user_id) => {
-    const like = { nickname_id, user_id }
-    const likedBefore = await getLike(like)
-
+const likeNickname = (nickname_id, user_id) => {
+  const like = { nickname_id, user_id };
+  getLike(like).then(([likedBefore]) => {
     if (likedBefore) {
-        return await getLike(like).first().del()
+      return getLike(like).del();
     } else {
-        return await db(likes)
-            .insert({
-                nickname_id,
-                user_id
-            })
-            
+      return db(likes).insert(like);
     }
-}
-
-const unlikeNickname = (nickname_id, user_id) => {
-    return db(likes)
-        .where({ nickname_id, user_id })
-        .del()
-        
-}
+  });
+};
 
 module.exports = {
-    likeNickname,
-    unlikeNickname
-}
+  likeNickname,
+  unlikeNickname,
+};
