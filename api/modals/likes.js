@@ -1,12 +1,17 @@
 const db = require("../../data/db-config")
 const { likes } = require("../../data/tableNames")
 
+const getLike = async like => {
+    return await db(likes)
+        .where(like)
+} 
+
 const likeNickname = async (nickname_id, user_id) => {
-    const likedBefore = await db(likes)
-        .where({ nickname_id, user_id })
+    const like = { nickname_id, user_id }
+    const likedBefore = await getLike(like)
 
     if (likedBefore) {
-        return await likedBefore.del().returning("*")
+        return await getLike(like).del().returning("*")
     } else {
         return await db(likes)
             .insert({
