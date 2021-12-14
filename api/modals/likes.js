@@ -11,7 +11,7 @@ const likeNickname = async (nickname_id, user_id) => {
     const likedBefore = await getLike(like)
 
     if (likedBefore) {
-        return await getLike(like).del().returning("*")
+        return await getLike(like).frist().del().returning("*")
     } else {
         return await db(likes)
             .insert({
