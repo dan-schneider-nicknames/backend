@@ -16,10 +16,13 @@ const query = new GraphQLObjectType({
                 try {
                     if (!user) throw new Error("not authorized")
                     const nicknames = await modals.Nicknames.getNicknames()
+                    const firstIndex = pagelength * page
+                    const lastIndex = firstIndex + page
+
                     if (nicknames.length < pagelength) { 
                         return nicknames
-                    } else if (nicknames.length > pagelength * (page + 1)) {
-                        const searchedNicknames = await nicknames.slice(pagelength * page, pagelength * (page + 1))
+                    } else if (nicknames.length > lastIndex) {
+                        const searchedNicknames = await nicknames.slice(firstIndex, lastIndex)
                         return searchedNicknames
                     } else {
                         const lastNicknames = await nicknames.slice(-pagelength, nicknames.length)
