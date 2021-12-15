@@ -16,8 +16,8 @@ const UserType = new GraphQLObjectType({
     username: { type: GraphQLString },
     nicknames: {
       type: new GraphQLList(NicknameType),
-      resolve: async (parent, args, { modals: { Nicknames } }) => {
-        const nicknames = await Nicknames.getUserNicknames(parent.user_id);
+      resolve: (parent, args, { modals: { Nicknames } }) => {
+        const nicknames = Nicknames.getUserNicknames(parent.user_id);
         return nicknames;
       },
     },
@@ -32,8 +32,8 @@ const NicknameType = new GraphQLObjectType({
     nickname: { type: GraphQLString },
     likes: {
       type: GraphQLInt,
-      resolve: async (parent, args, { modals: { Nicknames } }) => {
-        const likes = await Nicknames.getNicknameLikes(parent.nickname_id);
+      resolve: (parent, args, { modals: { Nicknames } }) => {
+        const likes = Nicknames.getNicknameLikes(parent.nickname_id);
         return likes;
       },
     },

@@ -1,24 +1,21 @@
 const db = require("../../data/db-config");
 const { nicknames, likes } = require("../../data/tableNames");
 
-const getUserNicknames = async (user_id) => {
+const getNicknames = () => db(nicknames)
+
+const getNicknamesBy = nickname => getNicknames().where(nickname)
+
+const getUserNicknames = async user_id => {
   try {
-    return await db(nicknames).where({ user_id });
+    const userNicknames = await getNicknamesBy({ user_id });
+    return userNicknames
   } catch (err) {
     throw err;
   }
 };
 
-const getNicknames = async () => {
-  try {
-    const call = await db(nicknames)
-    return call;
-  } catch (err) {
-    throw err;
-  }
-};
 
-const getNicknameLikes = async (nickname_id) => {
+const getNicknameLikes = async nickname_id => {
   try {
     const { length } = await db(likes).where({ nickname_id });
     return length;
@@ -27,16 +24,16 @@ const getNicknameLikes = async (nickname_id) => {
   }
 };
 
-const getNicknameById = async (nickname_id) => {
+const getNicknameById = async nickname_id => {
   try {
-    const call = await db(nicknames).where({ nickname_id }).first();
+    const call = await getNicknamesBy({ nickname_id }).first();
     return call;
   } catch (err) {
     throw err;
   }
 };
 
-const addNickname = async (nickname) => {
+const addNickname = async nickname => {
   try {
     const [nickname_id] = await db(nicknames).insert(nickname);
     const newNick = await getNicknameById(nickname_id);
@@ -46,10 +43,10 @@ const addNickname = async (nickname) => {
   }
 };
 
-const deleteNickname = async (nickname_id) => {
+const deleteNickname = async nickname_id => {
   try {
-    const call = await db(nicknames).where({ nickname_id }).del();
-    return call;
+    const removedNickname = await getNicknamesBy({ nickname_id }).del();
+    return removedNickname;
   } catch (err) {
     throw err;
   }

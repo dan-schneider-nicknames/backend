@@ -7,20 +7,28 @@ const query = new GraphQLObjectType({
         nicknames: {
             type: new GraphQLList(NicknameType),
             resolve: async (parent, args, { user, modals }) => {
-                if (!user) throw new Error("not authorized")
-                return await modals.Nicknames.getNicknames()
+                try {
+                    if (!user) throw new Error("not authorized")
+                    const nicknames = await modals.Nicknames.getNicknames()
+                    return nicknames
+                } catch(err) {
+                    throw err
+                }
             }
         },
         user: {
             type: UserType,
             args: {
-                username: {
-                    type: GraphQLString
-                },
+                username: { type: GraphQLString },
             },
             resolve: async (parent, { username }, { user, modals }) => {
-                if (!username) return user
-                return await modals.Users.getUserByUsername(username)
+                try {
+                    if (!username) return user
+                    const searchedUser = await modals.Users.getUserByUsername(username)
+                    return searchedUser
+                } catch(err) {
+                    throw err
+                }
             }
         },
     }),

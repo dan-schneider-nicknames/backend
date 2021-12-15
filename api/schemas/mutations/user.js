@@ -12,9 +12,13 @@ const userMutations = {
             username: { type: new GraphQLNonNull(GraphQLString) },
         },
         resolve: async (parent, args, { modals }) => {
-            const hash = bcrypt.hashSync(args.password, 10);
-            const newUser = await modals.Users.addUser({ ...args, password: hash });
-            return tokenBuilder(newUser)
+            try {
+                const hash = bcrypt.hashSync(args.password, 10);
+                const newUser = await modals.Users.addUser({ ...args, password: hash });
+                return tokenBuilder(newUser)
+            } catch(err) {
+                throw err
+            }
         },
     },
     login: {
@@ -25,13 +29,17 @@ const userMutations = {
             username: { type: new GraphQLNonNull(GraphQLString) },
         },
         resolve: async (parent, args, { modals }) => {
-            const { password, username } = args
-            const user = await modals.Users.getUserByUsername(username)
-            const { password: hashedPassword } = user
-            if (bcrypt.compareSync(password, hashedPassword)) {
-                return tokenBuilder(user)
-            } else {
-                throw new Error("invalid credentials")
+            try {
+                const { password, username } = args
+                const user = await modals.Users.getUserByUsername(username)
+                const { password: hashedPassword } = user
+                if (bcrypt.compareSync(password, hashedPassword)) {
+                    return tokenBuilder(user)
+                } else {
+                    throw new Error("invalid credentials")
+                }
+            } catch(err) {
+                throw err
             }
         }
     }

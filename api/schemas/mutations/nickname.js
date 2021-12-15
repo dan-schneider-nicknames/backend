@@ -12,10 +12,14 @@ const nicknameMutations = {
     type: NicknameType,
     args: {
       nickname: { type: new GraphQLNonNull(GraphQLString) },
-      // user_id: { type: new GraphQLNonNull(GraphQLID) },
     },
-    resolve: (parent, { nickname }, { user: { user_id }, modals }) => {
-      return modals.Nicknames.addNickname({ nickname, user_id });
+    resolve: async (parent, { nickname }, { user: { user_id }, modals }) => {
+      try {
+        const newNickname = await modals.Nicknames.addNickname({ nickname, user_id });
+        return newNickname
+      } catch(err) {
+        throw err
+      }
     },
   },
   updateNickname: {
@@ -26,8 +30,13 @@ const nicknameMutations = {
       nickname: { type: GraphQLString },
       user_id: { type: GraphQLID },
     },
-    resolve: (parent, args, { modals }) => {
-      return modals.Nicknames.updateNickname(args);
+    resolve: async (parent, args, { modals }) => {
+      try {
+        const updatedNickname = await modals.Nicknames.updateNickname(args);
+        return updatedNickname
+      } catch(err) {
+        throw err
+      }
     },
   },
   deleteNickname: {
@@ -36,8 +45,13 @@ const nicknameMutations = {
     args: {
       nickname_id: { type: new GraphQLNonNull(GraphQLID) },
     },
-    resolve: (parent, { nickname_id }, { modals }) => {
-      return modals.Nicknames.deleteNickname(nickname_id);
+    resolve: async (parent, { nickname_id }, { modals }) => {
+      try {
+        const removedNickname = await modals.Nicknames.deleteNickname(nickname_id);
+        return removedNickname
+      } catch(err) {
+        throw err
+      }
     },
   },
   likeNickname: {
@@ -46,8 +60,13 @@ const nicknameMutations = {
     args: {
       nickname_id: { type: new GraphQLNonNull(GraphQLID) }
     },
-    resolve: (parent, { nickname_id }, { user: { user_id }, modals }) => {
-      return modals.Likes.likeNickname(nickname_id, user_id)
+    resolve: async (parent, { nickname_id }, { user: { user_id }, modals }) => {
+      try {
+        const like = await modals.Likes.likeNickname({ nickname_id, user_id })
+        return like
+      } catch(err) {
+        throw err
+      }
     }
   }
 }
