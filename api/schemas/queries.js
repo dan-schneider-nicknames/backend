@@ -1,4 +1,4 @@
-const { GraphQLObjectType, GraphQLList, GraphQLString } = require("graphql")
+const { GraphQLObjectType, GraphQLList, GraphQLString, GraphQLInt, GraphQLNonNull } = require("graphql")
 const { NicknameType, UserType } = require("./types")
 
 const query = new GraphQLObjectType({
@@ -6,11 +6,22 @@ const query = new GraphQLObjectType({
     fields: () => ({
         nicknames: {
             type: new GraphQLList(NicknameType),
-            resolve: async (parent, args, { user, modals }) => {
+            args: {
+                page: { type: new GraphQLNonNull(GraphQLInt) },
+
+            },
+            resolve: async (parent, { page }, { user, modals }) => {
                 try {
                     if (!user) throw new Error("not authorized")
                     const nicknames = await modals.Nicknames.getNicknames()
-                    return nicknames
+                    const pagelength = 15
+                    if (nicknames.length < pagelength) { 
+                        return nicknames
+                    } else if (nicknames.length > pagelength * (page + 1)) {
+                        return nicknames.slice(pagelength * page, pagelength * (page + 1))
+                    } else {
+                        return nicknames.slice(-pagelength, nicknames.length)
+                    }
                 } catch(err) {
                     throw err
                 }
