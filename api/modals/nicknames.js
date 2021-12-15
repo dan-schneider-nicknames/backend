@@ -11,7 +11,8 @@ const getUserNicknames = async (user_id) => {
 
 const getNicknames = async () => {
   try {
-    await db(nicknames);
+    const call = await db(nicknames)
+    return call;
   } catch (err) {
     console.log(err);
   }
