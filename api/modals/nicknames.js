@@ -5,7 +5,7 @@ const getUserNicknames = async (user_id) => {
   try {
     return await db(nicknames).where({ user_id });
   } catch (err) {
-    console.log(err);
+    throw err;
   }
 };
 
@@ -14,7 +14,7 @@ const getNicknames = async () => {
     const call = await db(nicknames)
     return call;
   } catch (err) {
-    console.log(err);
+    throw err;
   }
 };
 
@@ -23,7 +23,7 @@ const getNicknameLikes = async (nickname_id) => {
     const { length } = await db(likes).where({ nickname_id });
     return length;
   } catch (err) {
-    console.log(err);
+    throw err;
   }
 };
 
@@ -32,7 +32,7 @@ const getNicknameById = async (nickname_id) => {
     const call = await db(nicknames).where({ nickname_id }).first();
     return call;
   } catch (err) {
-    console.log(err);
+    throw err;
   }
 };
 
@@ -42,7 +42,7 @@ const addNickname = async (nickname) => {
     const newNick = await getNicknameById(nickname_id);
     return newNick;
   } catch (err) {
-    console.log(err);
+    throw err;
   }
 };
 
@@ -51,7 +51,7 @@ const deleteNickname = async (nickname_id) => {
     const call = await db(nicknames).where({ nickname_id }).del();
     return call;
   } catch (err) {
-    console.log(err);
+    throw err;
   }
 };
 

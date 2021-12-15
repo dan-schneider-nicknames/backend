@@ -57,7 +57,7 @@ const NicknameType = new GraphQLObjectType({
     },
     createdBy: {
       type: GraphQLBoolean,
-      resolve: async (parent, args, { user: { user_id } }) => {
+      resolve: (parent, args, { user: { user_id } }) => {
         return user_id === parent.user_id
       },
     },
