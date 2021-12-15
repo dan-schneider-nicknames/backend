@@ -19,9 +19,11 @@ const query = new GraphQLObjectType({
                     if (nicknames.length < pagelength) { 
                         return nicknames
                     } else if (nicknames.length > pagelength * (page + 1)) {
-                        return await nicknames.slice(pagelength * page, pagelength * (page + 1))
+                        const searchedNicknames = await nicknames.slice(pagelength * page, pagelength * (page + 1))
+                        return searchedNicknames
                     } else {
-                        return await nicknames.slice(-pagelength, nicknames.length)
+                        const lastNicknames = await nicknames.slice(-pagelength, nicknames.length)
+                        return lastNicknames
                     }
                 } catch(err) {
                     throw err
