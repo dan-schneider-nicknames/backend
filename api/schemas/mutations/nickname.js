@@ -36,8 +36,8 @@ const nicknameMutations = {
     args: {
       nickname_id: { type: new GraphQLNonNull(GraphQLID) },
     },
-    resolve: (parent, args, { modals }) => {
-      return modals.Nicknames.deleteNickname(args);
+    resolve: (parent, { nickname_id }, { modals }) => {
+      return modals.Nicknames.deleteNickname(nickname_id);
     },
   },
   likeNickname: {
