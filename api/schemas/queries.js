@@ -1,7 +1,7 @@
 const { GraphQLObjectType, GraphQLList, GraphQLString, GraphQLInt, GraphQLNonNull } = require("graphql")
 const { NicknameType, UserType } = require("./types")
 
-const pagelength = 7
+const pagelength = 5
 
 const query = new GraphQLObjectType({
     name: "schneiderQuery",
