@@ -17,7 +17,7 @@ const query = new GraphQLObjectType({
                     if (!user) throw new Error("not authorized")
                     const nicknames = await modals.Nicknames.getNicknames()
                     const firstIndex = pagelength * page
-                    const lastIndex = firstIndex + page
+                    const lastIndex = firstIndex + pagelength
 
                     if (nicknames.length < pagelength) { 
                         return nicknames
