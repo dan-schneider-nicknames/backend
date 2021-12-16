@@ -1,7 +1,7 @@
 const db = require("../../data/db-config");
 const { nicknames, likes } = require("../../data/tableNames");
 
-const getNicknames = () => db(nicknames)
+const getNicknames = () => db(nicknames).orderBy("nickname_id", "desc")
 
 const getNicknamesBy = nickname => getNicknames().where(nickname)
 
