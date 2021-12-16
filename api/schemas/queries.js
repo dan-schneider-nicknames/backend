@@ -40,6 +40,7 @@ const query = new GraphQLObjectType({
             },
             resolve: async (parent, { username }, { user, modals }) => {
                 try {
+                    if (!user) throw new Error("not authorized")
                     if (!username) return user
                     const searchedUser = await modals.Users.getUserByUsername(username)
                     return searchedUser

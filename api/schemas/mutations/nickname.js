@@ -15,6 +15,7 @@ const nicknameMutations = {
     },
     resolve: async (parent, { nickname }, { user: { user_id }, modals }) => {
       try {
+        if (!user) throw new Error("not authorized")
         const newNickname = await modals.Nicknames.addNickname({ nickname, user_id });
         return newNickname
       } catch(err) {
@@ -30,8 +31,9 @@ const nicknameMutations = {
       nickname: { type: GraphQLString },
       user_id: { type: GraphQLID },
     },
-    resolve: async (parent, args, { modals }) => {
+    resolve: async (parent, args, { modals, user }) => {
       try {
+        if (!user) throw new Error("not authorized")
         const updatedNickname = await modals.Nicknames.updateNickname(args);
         return updatedNickname
       } catch(err) {
@@ -45,8 +47,9 @@ const nicknameMutations = {
     args: {
       nickname_id: { type: new GraphQLNonNull(GraphQLID) },
     },
-    resolve: async (parent, { nickname_id }, { modals }) => {
+    resolve: async (parent, { nickname_id }, { user, modals }) => {
       try {
+        if (!user) throw new Error("not authorized")
         const removedNickname = await modals.Nicknames.deleteNickname(nickname_id);
         return removedNickname
       } catch(err) {
@@ -62,6 +65,7 @@ const nicknameMutations = {
     },
     resolve: async (parent, { nickname_id }, { user: { user_id }, modals }) => {
       try {
+        if (!user) throw new Error("not authorized")
         const like = await modals.Likes.likeNickname({ nickname_id, user_id })
         return like
       } catch(err) {
