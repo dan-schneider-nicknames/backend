@@ -14,18 +14,29 @@ const query = new GraphQLObjectType({
             },
             resolve: async (parent, { page }, { user, modals }) => {
                 try {
-                    if (!user) throw new Error("not authorized")
+                    // if (!user) throw new Error("not authorized")
                     const nicknames = await modals.Nicknames.getNicknames()
+                    const nicknamesWithLikes = nicknames.map(async nickname => {
+                        try {
+                            return {
+                                ...nickname,
+                                likes: await modals.Nicknames.getNicknameLikes(nickname.nickname_id)
+                            }
+                        } catch(err) {
+                            throw err
+                        }
+                    })
+                    const sortedNicknames = nicknamesWithLikes.sort((a, b) => a.likes > b.likes)
                     const firstIndex = pagelength * page
                     const lastIndex = firstIndex + pagelength
 
                     if (nicknames.length < pagelength) { 
                         return nicknames
                     } else if (nicknames.length > lastIndex) {
-                        const searchedNicknames = await nicknames.slice(firstIndex, lastIndex)
+                        const searchedNicknames = await sortedNicknames.slice(firstIndex, lastIndex)
                         return searchedNicknames
                     } else {
-                        const lastNicknames = await nicknames.slice(-pagelength, nicknames.length)
+                        const lastNicknames = await sortedNicknames.slice(-pagelength, sortedNicknames.length)
                         return lastNicknames
                     }
                 } catch(err) {

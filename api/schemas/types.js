@@ -32,14 +32,14 @@ const NicknameType = new GraphQLObjectType({
     nickname: { type: GraphQLString },
     likes: {
       type: GraphQLInt,
-      resolve: async (parent, args, { modals: { Nicknames } }) => {
-        try {
-          const likes = await Nicknames.getNicknameLikes(parent.nickname_id);
-          return likes;
-        } catch(err) {
-          throw err
-        }
-      },
+      // resolve: async (parent, args, { modals: { Nicknames } }) => {
+      //   try {
+      //     const likes = await Nicknames.getNicknameLikes(parent.nickname_id);
+      //     return likes;
+      //   } catch(err) {
+      //     throw err
+      //   }
+      // },
     },
     user: {
       type: UserType,
