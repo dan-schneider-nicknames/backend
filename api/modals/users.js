@@ -22,6 +22,14 @@ const addUser = async user => {
 
 const getUserBy = user => db(users).where(user).first()
 
+const getUserByEmail = async email => {
+  try {
+    const user = await getUserBy({ email });
+    return user;
+  } catch (err) {
+    throw err;
+  }
+};
 
 const getUserById = async user_id => {
   try {
@@ -44,6 +52,7 @@ const getUserByUsername = async username => {
 module.exports = {
   getUsers,
   addUser,
+  getUserByEmail,
   getUserById,
   getUserByUsername,
 };
