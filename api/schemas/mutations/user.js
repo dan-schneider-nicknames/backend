@@ -14,19 +14,9 @@ const userMutations = {
             password: { type: new GraphQLNonNull(GraphQLString) },
             username: { type: new GraphQLNonNull(GraphQLString) },
         },
-        resolve: async (parent, args, { modals }) => {
+        resolve: async (parent, args, { modals, authentication }) => {
             try {
-                const { email, username } = args;
-                const exists = await axios.get(verifyURL + email)
-                if(!exists.data.status){throw new Error("Not a valid email")}
-                const oldUser = await modals.Users.getUserByEmail(email);
-                if (oldUser) {
-                    throw new Error("User already exists with that Email");
-                }
-                const olderUser = await modals.Users.getUserByUsername(username);
-                if (olderUser) {
-                    throw new Error("User already exists with that Username");
-                }
+                await authentication.userValidation(modals, args);
                 const hash = bcrypt.hashSync(args.password, 10);
                 const newUser = await modals.Users.addUser({ ...args, password: hash });
                 return tokenBuilder(newUser)

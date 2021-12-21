@@ -15,10 +15,8 @@ const nicknameMutations = {
     },
     resolve: async (parent, { nickname }, { user: { user_id }, modals }) => {
       try {
-        
         const newNickname = await modals.Nicknames.addNickname({ nickname, user_id });
         return newNickname
-        
       } catch(err) {
         throw err
       }
