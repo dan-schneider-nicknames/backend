@@ -20,5 +20,4 @@ app.use("/", graphqlHTTP(req => ({
     }
 })));
 
-
 module.exports = app

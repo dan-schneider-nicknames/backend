@@ -1,3 +1,5 @@
+const bcryptjs = require('bcryptjs');
+
 const {
   GraphQLObjectType,
   GraphQLString,
@@ -11,8 +13,22 @@ const UserType = new GraphQLObjectType({
   name: "user",
   fields: () => ({
     user_id: { type: GraphQLID },
-    email: { type: GraphQLString },
-    password: { type: GraphQLString },
+    email: {
+      type: GraphQLString,
+      resolve: (parent, args, context) => {
+        const {user_id: userId, email} = parent
+        const { user_id } = context.user
+        return user_id === userId ? email : "Email is Confidential";
+      },
+    },
+    password: {
+      type: GraphQLString,
+      resolve: (parent, args, context) => {
+        const {user_id: userId, password} = parent
+        const { user_id } = context.user
+        return user_id === userId ? password : "Password is Confidential";
+      },
+    },
     username: { type: GraphQLString },
     nicknames: {
       type: new GraphQLList(NicknameType),
@@ -36,8 +52,8 @@ const NicknameType = new GraphQLObjectType({
         try {
           const likes = await Nicknames.getNicknameLikes(parent.nickname_id);
           return likes;
-        } catch(err) {
-          throw err
+        } catch (err) {
+          throw err;
         }
       },
     },
@@ -47,8 +63,8 @@ const NicknameType = new GraphQLObjectType({
         try {
           const user = await Users.getUserById(user_id);
           return user;
-        } catch(err) {
-          throw err
+        } catch (err) {
+          throw err;
         }
       },
     },
@@ -66,7 +82,7 @@ const NicknameType = new GraphQLObjectType({
     createdBy: {
       type: GraphQLBoolean,
       resolve: (parent, args, { user: { user_id } }) => {
-        return user_id === parent.user_id
+        return user_id === parent.user_id;
       },
     },
   }),
