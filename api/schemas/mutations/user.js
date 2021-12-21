@@ -31,13 +31,13 @@ const userMutations = {
         resolve: async (parent, args, { modals }) => {
             try {
                 const { password, username } = args
-                const user = await modals.Users.getUserByUsername(username)
+                const user = await modals.Users.getUserByContext(username)
+                if (!user) throw new Error("Invalid Username or Email")
                 const { password: hashedPassword } = user
-                if (bcrypt.compareSync(password, hashedPassword)) {
-                    return tokenBuilder(user)
-                } else {
-                    throw new Error("invalid credentials")
-                }
+                if (!bcrypt.compareSync(password, hashedPassword)) {
+                    throw new Error("Invalid password")
+                } 
+                return tokenBuilder(user)
             } catch(err) {
                 throw err
             }
