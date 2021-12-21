@@ -6,6 +6,7 @@ const app = express()
 const checkToken = require("./middleware/checkToken")
 const modals = require("./modals")
 
+
 app.use(cors())
 app.use(express.json())
 

@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/dan-schneider-nicknames/backend#readme",
   "dependencies": {
+    "axios": "^0.24.0",
     "bcryptjs": "^2.4.3",
     "brcypt": "^1.0.1",
     "cors": "^2.8.5",

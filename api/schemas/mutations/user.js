@@ -1,6 +1,9 @@
 const { GraphQLNonNull, GraphQLString } = require("graphql");
 const { tokenBuilder } = require("../../middleware/tokenbuilder");
 const bcrypt = require("bcryptjs")
+const axios = require("axios")
+
+const verifyURL = process.env.EMAIL_API_URL
 
 const userMutations = {
     addUser: {
@@ -14,6 +17,8 @@ const userMutations = {
         resolve: async (parent, args, { modals }) => {
             try {
                 const { email, username } = args;
+                const exists = await axios.get(verifyURL + email)
+                if(!exists.data.status){throw new Error("Not a valid email")}
                 const oldUser = await modals.Users.getUserByEmail(email);
                 if (oldUser) {
                     throw new Error("User already exists with that Email");
