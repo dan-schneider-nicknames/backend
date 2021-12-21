@@ -1,4 +1,4 @@
-const bcryptjs = require('bcryptjs');
+const bcryptjs = require("bcryptjs");
 
 const {
   GraphQLObjectType,
@@ -16,16 +16,16 @@ const UserType = new GraphQLObjectType({
     email: {
       type: GraphQLString,
       resolve: (parent, args, context) => {
-        const {user_id: userId, email} = parent
-        const { user_id } = context.user
+        const { user_id: userId, email } = parent;
+        const { user_id } = context.user;
         return user_id === userId ? email : "Email is Confidential";
       },
     },
     password: {
       type: GraphQLString,
       resolve: (parent, args, context) => {
-        const {user_id: userId, password} = parent
-        const { user_id } = context.user
+        const { user_id: userId, password } = parent;
+        const { user_id } = context.user;
         return user_id === userId ? password : "Password is Confidential";
       },
     },
@@ -36,6 +36,7 @@ const UserType = new GraphQLObjectType({
         const nicknames = Nicknames.getUserNicknames(parent.user_id);
         return nicknames;
       },
+      description: "List of nicknames associated with this user",
     },
   }),
 });
@@ -56,6 +57,7 @@ const NicknameType = new GraphQLObjectType({
           throw err;
         }
       },
+      description: "Number of likes for this nickname",
     },
     user: {
       type: UserType,
@@ -67,6 +69,7 @@ const NicknameType = new GraphQLObjectType({
           throw err;
         }
       },
+      description: "User associated with this nickname",
     },
     liked: {
       type: GraphQLBoolean,
@@ -78,12 +81,14 @@ const NicknameType = new GraphQLObjectType({
         const [liked] = await Likes.getLike({ nickname_id, user_id });
         return liked ? true : false;
       },
+      description: "Whether the current user has liked this nickname",
     },
     createdBy: {
       type: GraphQLBoolean,
       resolve: (parent, args, { user: { user_id } }) => {
         return user_id === parent.user_id;
       },
+      description: "Whether the current user created this nickname",
     },
   }),
 });
