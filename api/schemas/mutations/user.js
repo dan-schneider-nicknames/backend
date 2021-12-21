@@ -13,6 +13,15 @@ const userMutations = {
         },
         resolve: async (parent, args, { modals }) => {
             try {
+                const { email, username } = args;
+                const oldUser = await modals.Users.getUserByEmail(email);
+                if (oldUser) {
+                    throw new Error("User already exists with that Email");
+                }
+                const olderUser = await modals.Users.getUserByUsername(username);
+                if (olderUser) {
+                    throw new Error("User already exists with that Username");
+                }
                 const hash = bcrypt.hashSync(args.password, 10);
                 const newUser = await modals.Users.addUser({ ...args, password: hash });
                 return tokenBuilder(newUser)
