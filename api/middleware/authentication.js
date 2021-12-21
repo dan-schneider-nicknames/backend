@@ -18,7 +18,6 @@ const signupValidation = async (modals, {email, username}) => {
     }
 }
 
-
 module.exports = {
     signupValidation,
 }
