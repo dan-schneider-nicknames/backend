@@ -24,7 +24,7 @@ const sendResetToken = (resetToken, to) => {
     const resetMail = {
         ...mailMessage,
         to,
-        text: `Here is your reset token for reseting your password: ${resetToken}`
+        text: `Follow this link to reset your passord: https://dan-schneider-nicknames.github.io/frontend/reset/${resetToken}`
     }
     transporter.sendMail({
         ...resetMail
