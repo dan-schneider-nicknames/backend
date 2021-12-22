@@ -69,7 +69,8 @@ const getUserByUsername = async (username) => {
 const updateUserById = async (user_id, props) => {
   try {
     const id = await getUserBy({ user_id }).update(props)
-    return id
+    const user = await getUserById(id)
+    return user
   } catch(err) {
     throw err
   }

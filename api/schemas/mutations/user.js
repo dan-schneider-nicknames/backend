@@ -63,7 +63,7 @@ const userMutations = {
         if (password !== confirmPassword) {
           throw new Error(`Your passwords don't match`);
         }
-        const { user_id, resetTokenExiry } = await getUserBy({ resetToken })
+        const { user_id, resetTokenExiry } = await getUserBy({ resetToken, email })
         if (Date.now() >= resetTokenExiry) throw new Error("Reset token is expired")
 
         if (!user_id)
@@ -72,11 +72,8 @@ const userMutations = {
           )
         const hash = await bcrypt.hash(password, saltRounds);
   
-        const result = await updateUserById(user_id, { password: hash });
-  
-        // jwt
-        const token = await tokenBuilder(result);
-        return token;
+        const user = await updateUserById(user_id, { password: hash });
+        return tokenBuilder(user);
       } catch(err) {
         throw err
       }
