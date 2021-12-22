@@ -73,13 +73,15 @@ const query = new GraphQLObjectType({
       resolve: async (parent, args, context) => {
         try {
           const { email } = args
+          const { sendResetToken } = context.authentication
           const { getUserByEmail, updateUserById } = context.modals.Users
-          const { user_id } = await getUserByEmail(email)
-          if (!user_id) throw new Error("No user found with that email."); 
+          const user = await getUserByEmail(email)
+          if (!user) throw new Error("No user found with that email."); 
           const randomBytesPromisified = promisify(randomBytes);
           const resetToken = (await randomBytesPromisified(20)).toString("hex");
           const resetTokenExpiry = Date.now() + 3600000; // 1 hour from now
-          const id = await updateUserById(user_id, { resetToken, resetTokenExpiry })
+          const id = await updateUserById(user.user_id, { resetToken, resetTokenExpiry })
+          sendResetToken(resetToken, user.email)
           return id ? true : false
         } catch(err) {
           throw err

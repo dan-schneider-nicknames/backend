@@ -2,20 +2,32 @@ const axios = require('axios')
 const { EMAIL_API_URL, MAIL_EMAIL } = process.env;
 const verifyURL = EMAIL_API_URL
 const transporter = require("./mail")
-
+const mailMessage = {
+  from: MAIL_EMAIL,
+  subject: "Schneider Social",
+};
 
 const sendConfirmation = (newUser) => {
     const customMail = (name) => {
       return `Thank you, ${name} for joining Schneider Social, we hope you enjoy our platform. Feel free to get as raunchy as need be with your nicknames! If you ever get lost, you can find us at : https://dan-schneider-nicknames.github.io/frontend/`
     }
-    const mailMessage = {
-      from: MAIL_EMAIL,
-      subject: "Schneider Social",
-    };
     transporter.sendMail({
         ...mailMessage, 
         to: newUser.email, 
         text: customMail(newUser.username) 
+    }, (error, data) => {
+        console.log(error ? error : "Email sent: " + data.response)
+    })
+}
+
+const sendResetToken = (resetToken, to) => {
+    const resetMail = {
+        ...mailMessage,
+        to,
+        text: `Here is your reset token for reseting your password: ${resetToken}`
+    }
+    transporter.sendMail({
+        ...resetMail
     }, (error, data) => {
         console.log(error ? error : "Email sent: " + data.response)
     })
@@ -55,4 +67,5 @@ const checkUsernameUnique = async (username, modals) => {
 module.exports = {
     signupValidation,
     sendConfirmation,
+    sendResetToken
 }

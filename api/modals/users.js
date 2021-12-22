@@ -78,6 +78,7 @@ const updateUserById = async (user_id, props) => {
 module.exports = {
   getUsers,
   addUser,
+  getUserBy,
   getUserByContext,
   getUserByEmail,
   getUserById,
