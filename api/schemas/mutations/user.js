@@ -1,31 +1,7 @@
 const { GraphQLNonNull, GraphQLString } = require("graphql");
 const { tokenBuilder } = require("../../middleware/tokenbuilder");
 const bcrypt = require("bcryptjs");
-const env = process.env;
 
-
-var nodeMailer = require("nodemailer");
-const { off } = require("../../server");
-
-var transporter = nodeMailer.createTransport({
-  host: "smtp.gmail.com",
-  port: env.SECURE_MAIL ? 465 : 587,
-  secure: env.SECURE_MAIL,
-  requireTLS: true,
-  auth: {
-    user: env.MAIL_EMAIL,
-    pass: env.MAIL_PASSWORD,
-  },
-});
-
-var mailMessage = {
-  from: env.MAIL_EMAIL,
-  subject: "Schneider Social",
-};
-
-const customMail = (name) => {
-    return `Thank you, ${name} for joining Schneider Social, we hope you enjoy our platform. Feel free to get as raunchy as need be with your nicknames! If you ever get lost, you can find us at : https://dan-schneider-nicknames.github.io/frontend/`
-}
 
 const userMutations = {
   addUser: {
@@ -41,13 +17,7 @@ const userMutations = {
         await authentication.signupValidation(modals, args);
         const hash = bcrypt.hashSync(args.password, 10);
         const newUser = await modals.Users.addUser({ ...args, password: hash });
-        transporter.sendMail({...mailMessage, to: newUser.email, text: customMail(newUser.username) }, function( error, data ){
-            if (error) {
-                console.log(error);
-              } else {
-                console.log("Email sent: " + data.response);
-              }
-        })
+        await authentication.sendConfirmation(newUser)
         return tokenBuilder(newUser);
       } catch (err) {
         throw err;

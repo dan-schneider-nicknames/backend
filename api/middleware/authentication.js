@@ -1,5 +1,25 @@
 const axios = require('axios')
-const verifyURL = process.env.EMAIL_API_URL
+const { EMAIL_API_URL, MAIL_EMAIL } = process.env;
+const verifyURL = EMAIL_API_URL
+const transporter = require("./mail")
+
+
+const sendConfirmation = (newUser) => {
+    const customMail = (name) => {
+      return `Thank you, ${name} for joining Schneider Social, we hope you enjoy our platform. Feel free to get as raunchy as need be with your nicknames! If you ever get lost, you can find us at : https://dan-schneider-nicknames.github.io/frontend/`
+    }
+    const mailMessage = {
+      from: MAIL_EMAIL,
+      subject: "Schneider Social",
+    };
+    transporter.sendMail({
+        ...mailMessage, 
+        to: newUser.email, 
+        text: customMail(newUser.username) 
+    }, (error, data) => {
+        console.log(error ? error : "Email sent: " + data.response)
+    })
+}
 
 const signupValidation = async (modals, {email, username}) => {
     try{
@@ -20,4 +40,5 @@ const signupValidation = async (modals, {email, username}) => {
 
 module.exports = {
     signupValidation,
+    sendConfirmation
 }
