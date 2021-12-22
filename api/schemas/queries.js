@@ -4,8 +4,11 @@ const {
   GraphQLString,
   GraphQLInt,
   GraphQLNonNull,
+  GraphQLBoolean,
 } = require("graphql");
 const { NicknameType, UserType } = require("./types");
+const randomBytes = require("randombytes")
+const { promisify } = require("util")
 
 const pagelength = 5;
 
@@ -61,6 +64,28 @@ const query = new GraphQLObjectType({
       },
       description: "User by username",
     },
+    requestReset: {
+      type: GraphQLBoolean,
+      description: "Endpoint for reseting a password by email",
+      args: {
+        email: { type: new GraphQLNonNull(GraphQLString) }
+      },
+      resolve: async (parent, args, context) => {
+        try {
+          const { email } = args
+          const { getUserByEmail, updateUserById } = context.modals.Users
+          const { user_id } = await getUserByEmail(email)
+          if (!user_id) throw new Error("No user found with that email."); 
+          const randomBytesPromisified = promisify(randomBytes);
+          const resetToken = (await randomBytesPromisified(20)).toString("hex");
+          const resetTokenExpiry = Date.now() + 3600000; // 1 hour from now
+          const id = await updateUserById(user_id, { resetToken, resetTokenExpiry })
+          return id ? true : false
+        } catch(err) {
+          throw err
+        }
+      }
+    }
   }),
 });
 

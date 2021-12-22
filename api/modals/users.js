@@ -66,6 +66,15 @@ const getUserByUsername = async (username) => {
   }
 };
 
+const updateUserById = async (user_id, props) => {
+  try {
+    const id = await getUserBy({ user_id }).update(props)
+    return id
+  } catch(err) {
+    throw err
+  }
+}
+
 module.exports = {
   getUsers,
   addUser,
@@ -73,4 +82,5 @@ module.exports = {
   getUserByEmail,
   getUserById,
   getUserByUsername,
+  updateUserById
 };

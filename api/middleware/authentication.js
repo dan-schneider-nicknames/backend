@@ -23,7 +23,7 @@ const sendConfirmation = (newUser) => {
 
 const signupValidation = async (modals, {email, username}) => {
     try{
-        await checkEmailExists(email)
+        await checkEmailIsValid(email)
         await checkEmailUnique(email, modals)
         await checkUsernameUnique(username, modals)
     } catch(err) {
@@ -31,7 +31,7 @@ const signupValidation = async (modals, {email, username}) => {
     }
 }
 
-const checkEmailExists = async email => {
+const checkEmailIsValid = async email => {
     const exists = await axios.get(verifyURL + email)
     if (!exists.data.status) {
         throw new Error("Not a valid email")
@@ -51,7 +51,8 @@ const checkUsernameUnique = async (username, modals) => {
     }
 }
 
+
 module.exports = {
     signupValidation,
-    sendConfirmation
+    sendConfirmation,
 }
