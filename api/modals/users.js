@@ -66,11 +66,23 @@ const getUserByUsername = async (username) => {
   }
 };
 
+const updateUserById = async (user_id, props) => {
+  try {
+    const id = await getUserBy({ user_id }).update(props)
+    const user = await getUserById(id)
+    return user
+  } catch(err) {
+    throw err
+  }
+}
+
 module.exports = {
   getUsers,
   addUser,
+  getUserBy,
   getUserByContext,
   getUserByEmail,
   getUserById,
   getUserByUsername,
+  updateUserById
 };
