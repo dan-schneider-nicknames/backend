@@ -23,18 +23,31 @@ const sendConfirmation = (newUser) => {
 
 const signupValidation = async (modals, {email, username}) => {
     try{
-        const exists = await axios.get(verifyURL + email)
-        if(!exists.data.status){throw new Error("Not a valid email")}
-        const oldUser = await modals.Users.getUserByEmail(email);
-        if (oldUser) {
-            throw new Error("User already exists with that Email");
-        }
-        const olderUser = await modals.Users.getUserByUsername(username);
-        if (olderUser) {
-            throw new Error("User already exists with that Username");
-        }
+        await checkEmailExists(email)
+        await checkEmailUnique(email, modals)
+        await checkUsernameUnique(username, modals)
     } catch(err) {
         throw err
+    }
+}
+
+const checkEmailExists = async email => {
+    const exists = await axios.get(verifyURL + email)
+    if (!exists.data.status) {
+        throw new Error("Not a valid email")
+    }
+}
+
+const checkEmailUnique = async (email, modals) => {
+    const oldUser = await modals.Users.getUserByEmail(email);
+    if (oldUser) {
+        throw new Error("User already exists with that Email");
+    }
+} 
+const checkUsernameUnique = async (username, modals) => {
+    const olderUser = await modals.Users.getUserByUsername(username);
+    if (olderUser) {
+        throw new Error("User already exists with that Username");
     }
 }
 
