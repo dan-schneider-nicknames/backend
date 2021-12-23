@@ -2,7 +2,7 @@
 const likesResolver = async (parent, args, context) => {
     try {
         const { nickname_id } = parent
-        const getNicknameLikes = context.modals.Nicknames
+        const { getNicknameLikes } = context.modals.Nicknames
         const likes = await getNicknameLikes(nickname_id);
         return likes;
     } catch (err) {
@@ -25,7 +25,7 @@ const likedResolver = async (parent, args, context) => {
     try {
         const { nickname_id } = parent
         const { user_id } = context.user
-        const getLike = context.modals.Likes
+        const { getLike } = context.modals.Likes
         const [liked] = await getLike({ nickname_id, user_id });
         return liked ? true : false;
     } catch(err) {

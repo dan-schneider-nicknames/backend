@@ -7,7 +7,7 @@ const nicknamesQueryResolver = async (parent, args, context) => {
   try {
     const { page } = args;
     const { user, modals } = context
-    if (!user) throw new Error("not authorized");
+    // if (!user) throw new Error("not authorized");
     const nicknames = await modals.Nicknames.getNicknames();
     const firstIndex = pagelength * page;
     const lastIndex = firstIndex + pagelength;
