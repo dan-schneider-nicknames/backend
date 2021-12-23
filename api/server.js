@@ -5,6 +5,8 @@ const cors = require("cors")
 const app = express()
 const checkToken = require("./middleware/checkToken")
 const modals = require("./modals")
+const authentication = require("./middleware/authentication")
+
 
 app.use(cors())
 app.use(express.json())
@@ -16,9 +18,9 @@ app.use("/", graphqlHTTP(req => ({
     graphiql: true,
     context: {
         user: req.user,
-        modals
+        modals,
+        authentication
     }
 })));
-
 
 module.exports = app

@@ -5,6 +5,12 @@ const {
   GraphQLInt
 } = require("graphql");
 const { NicknameType } = require("../types")
+const {
+  addNickResolver,
+  updateNickResolver,
+  deleteNickResolver,
+  likeNickResolver
+} = require("../../resolvers/mutations-resolvers/nickname-resolvers")
 
 const nicknameMutations = {
   addNickname: {
@@ -13,15 +19,7 @@ const nicknameMutations = {
     args: {
       nickname: { type: new GraphQLNonNull(GraphQLString) },
     },
-    resolve: async (parent, { nickname }, { user: { user_id }, modals }) => {
-      try {
-        if (!user) throw new Error("not authorized")
-        const newNickname = await modals.Nicknames.addNickname({ nickname, user_id });
-        return newNickname
-      } catch(err) {
-        throw err
-      }
-    },
+    resolve: addNickResolver
   },
   updateNickname: {
     name: "updateNickname",
@@ -31,15 +29,7 @@ const nicknameMutations = {
       nickname: { type: GraphQLString },
       user_id: { type: GraphQLID },
     },
-    resolve: async (parent, args, { modals, user }) => {
-      try {
-        if (!user) throw new Error("not authorized")
-        const updatedNickname = await modals.Nicknames.updateNickname(args);
-        return updatedNickname
-      } catch(err) {
-        throw err
-      }
-    },
+    resolve: updateNickResolver
   },
   deleteNickname: {
     name: "deleteNickname",
@@ -47,15 +37,7 @@ const nicknameMutations = {
     args: {
       nickname_id: { type: new GraphQLNonNull(GraphQLID) },
     },
-    resolve: async (parent, { nickname_id }, { user, modals }) => {
-      try {
-        if (!user) throw new Error("not authorized")
-        const removedNickname = await modals.Nicknames.deleteNickname(nickname_id);
-        return removedNickname
-      } catch(err) {
-        throw err
-      }
-    },
+    resolve: deleteNickResolver
   },
   likeNickname: {
     name: "addLike",
@@ -63,15 +45,7 @@ const nicknameMutations = {
     args: {
       nickname_id: { type: new GraphQLNonNull(GraphQLID) }
     },
-    resolve: async (parent, { nickname_id }, { user: { user_id }, modals }) => {
-      try {
-        if (!user) throw new Error("not authorized")
-        const like = await modals.Likes.likeNickname({ nickname_id, user_id })
-        return like
-      } catch(err) {
-        throw err
-      }
-    }
+    resolve: likeNickResolver
   }
 }
 

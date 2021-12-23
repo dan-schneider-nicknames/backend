@@ -1,55 +1,42 @@
-const { GraphQLObjectType, GraphQLList, GraphQLString, GraphQLInt, GraphQLNonNull } = require("graphql")
-const { NicknameType, UserType } = require("./types")
-
-const pagelength = 5
+const {
+  GraphQLObjectType,
+  GraphQLList,
+  GraphQLString,
+  GraphQLInt,
+  GraphQLNonNull,
+  GraphQLBoolean,
+} = require("graphql");
+const { NicknameType, UserType } = require("./types");
+const { nicknamesQueryResolver, userQueryResolver, resetQueryResolver} = require("../resolvers/queries-resolvers");
 
 const query = new GraphQLObjectType({
-    name: "schneiderQuery",
-    fields: () => ({
-        nicknames: {
-            type: new GraphQLList(NicknameType),
-            args: {
-                page: { type: new GraphQLNonNull(GraphQLInt) },
+  name: "schneiderQuery",
+  fields: () => ({
+    nicknames: {
+      type: new GraphQLList(NicknameType),
+      args: {
+        page: { type: new GraphQLNonNull(GraphQLInt) },
+      },
+      resolve: nicknamesQueryResolver,
+      description: "List of nicknames",
+    },
+    user: {
+      type: UserType,
+      args: {
+        username: { type: GraphQLString },
+      },
+      resolve: userQueryResolver,
+      description: "User by username",
+    },
+    requestReset: {
+      type: GraphQLBoolean,
+      description: "Endpoint for reseting a password by email",
+      args: {
+        email: { type: new GraphQLNonNull(GraphQLString) }
+      },
+      resolve: resetQueryResolver
+    }
+  }),
+});
 
-            },
-            resolve: async (parent, { page }, { user, modals }) => {
-                try {
-                    if (!user) throw new Error("not authorized")
-                    const nicknames = await modals.Nicknames.getNicknames()
-                    const firstIndex = pagelength * page
-                    const lastIndex = firstIndex + pagelength
-
-                    if (nicknames.length < pagelength) { 
-                        return nicknames
-                    } else if (nicknames.length > lastIndex) {
-                        const searchedNicknames = await nicknames.slice(firstIndex, lastIndex)
-                        return searchedNicknames
-                    } else {
-                        const lastNicknames = await nicknames.slice(-pagelength, nicknames.length)
-                        return lastNicknames
-                    }
-                } catch(err) {
-                    throw err
-                }
-            }
-        },
-        user: {
-            type: UserType,
-            args: {
-                username: { type: GraphQLString },
-            },
-            resolve: async (parent, { username }, { user, modals }) => {
-                try {
-                    if (!user) throw new Error("not authorized")
-                    if (!username) return user
-                    const searchedUser = await modals.Users.getUserByUsername(username)
-                    return searchedUser
-                } catch(err) {
-                    throw err
-                }
-            }
-        },
-    }),
-})
-
-module.exports = query
+module.exports = query;
