@@ -35,7 +35,7 @@ const sendResetToken = (resetToken, to) => {
 
 const signupValidation = async (modals, {email, username}) => {
     try{
-        await checkEmailIsValid(email)
+        // await checkEmailIsValid(email)
         await checkEmailUnique(email, modals)
         await checkUsernameUnique(username, modals)
     } catch(err) {
