@@ -12,7 +12,7 @@ exports.up = knex => {
     table.string("password")
         .notNullable()
     table.string("resetToken")
-    table.integer("resetTokenExpiry")
+    table.string("resetTokenExpiry")
   }).createTable(nicknames, table => {
     table.increments("nickname_id")
     table.string("nickname")

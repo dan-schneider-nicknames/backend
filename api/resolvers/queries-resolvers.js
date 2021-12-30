@@ -55,7 +55,7 @@ const resetQueryResolver = async (parent, args, context) => {
     if (!user) throw new Error("No user found with that email."); 
     const randomBytesPromisified = promisify(randomBytes);
     const resetToken = (await randomBytesPromisified(20)).toString("hex");
-    const resetTokenExpiry = Date.now() + 3600000; // 1 hour from now
+    const resetTokenExpiry = JSON.stringify(Date.now() + 3600000); // 1 hour from now
     const id = await updateUserById(user.user_id, { resetToken, resetTokenExpiry })
     sendResetToken(resetToken, user.email)
     return id ? true : false

@@ -44,7 +44,7 @@ const resetResolver = async (parent, args, context) => {
     if (!user_id) {
       throw new Error("Your reset token is invalid.")
     }
-    if (Date.now() >= resetTokenExpiry) {
+    if (Date.now() >= parseInt(resetTokenExpiry)) {
       throw new Error("Reset token is expired")
     }
     const hash = await hashSync(password, saltRounds);
