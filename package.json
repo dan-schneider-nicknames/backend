@@ -35,12 +35,10 @@
     "express-graphql": "^0.12.0",
     "graphql": "^16.0.1",
     "helmet": "^4.6.0",
-    "heroku": "^7.59.2",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.95.14",
     "nodemailer": "^6.7.2",
     "pg": "^8.7.1",
-    "postgres": "^1.0.2",
     "randombytes": "^2.1.0",
     "sqlite3": "^5.0.2"
   },
