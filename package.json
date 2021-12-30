@@ -9,7 +9,11 @@
     "devStart": "nodemon index.js",
     "migrate": "knex migrate:latest",
     "rollback": "knex migrate:rollback",
-    "seed": "knex seed:run"
+    "seed": "knex seed:run",
+    "migrateh": "heroku run knex migrate:latest -a potluck-planner-3",
+    "rollbackh": "heroku run knex migrate:rollback -a potluck-planner-3",
+    "databaseh": "heroku pg:psql -a potluck-planner-3",
+    "seedh": "heroku run knex seed:run -a potluck-planner-3"
   },
   "repository": {
     "type": "git",
@@ -31,9 +35,12 @@
     "express-graphql": "^0.12.0",
     "graphql": "^16.0.1",
     "helmet": "^4.6.0",
+    "heroku": "^7.59.2",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.95.14",
     "nodemailer": "^6.7.2",
+    "pg": "^8.7.1",
+    "postgres": "^1.0.2",
     "randombytes": "^2.1.0",
     "sqlite3": "^5.0.2"
   },
