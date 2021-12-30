@@ -35,7 +35,9 @@ const getNicknameById = async nickname_id => {
 
 const addNickname = async nickname => {
   try {
-    const [nickname_id] = await db(nicknames).insert(nickname);
+    const [nickname_id] = await db(nicknames)
+      .returning("nicname_id")
+      .insert(nickname);
     const newNick = await getNicknameById(nickname_id);
     return newNick;
   } catch (err) {

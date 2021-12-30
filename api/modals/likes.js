@@ -11,7 +11,7 @@ const likeNickname = like => {
       if (likedBefore) {
         return getLike(like).del();
       } else {
-        return db(likes).insert(like);
+        return db(likes).returning("like_id").insert(like);
       }
   });
 };

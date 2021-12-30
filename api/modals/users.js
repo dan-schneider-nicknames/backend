@@ -12,7 +12,9 @@ const getUsers = async () => {
 
 const addUser = async (user) => {
   try {
-    const [user_id] = await db(users).insert(user);
+    const [user_id] = await db(users)
+      .returning("user_id")
+      .insert(user);
     const newUser = await getUserById(user_id);
     return newUser;
   } catch (err) {
@@ -68,7 +70,9 @@ const getUserByUsername = async (username) => {
 
 const updateUserById = async (user_id, props) => {
   try {
-    const id = await getUserBy({ user_id }).update(props)
+    const [id] = await getUserBy({ user_id })
+      .returning("user_id")
+      .update(props)
     const user = await getUserById(id)
     return user
   } catch(err) {
