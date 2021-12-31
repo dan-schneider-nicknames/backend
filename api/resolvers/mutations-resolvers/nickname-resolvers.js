@@ -1,10 +1,13 @@
 
+
 const addNickResolver = async (parent, args, context) => {
   try {
     const { nickname } = args;
-    const { user, modals } = context
+    const { user, modals, authentication } = context
     const { user_id } = user
     const { addNickname } = modals.Nicknames
+    const { validateNickname } = authentication
+    await validateNickname(nickname, modals)
     const newNickname = await addNickname({ nickname, user_id });
     return newNickname
   } catch(err) {
