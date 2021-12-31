@@ -67,7 +67,7 @@ const validateNickname = async (nickname, modals) => {
     try {
         const isValid = nickname.includes("Dan") || nickname.includes("Schneider")
         if (!isValid) throw new Error("Must include 'Dan' or 'Schneider'")
-        const similarNicknames = await modals.Users.getNicknameBy({ nickname })
+        const similarNicknames = await modals.Users.getNicknamesBy({ nickname })
         similarNicknames.forEach(n => {
             if (n.nickname === nickname) throw new Error("Nickname already exists");
         })
