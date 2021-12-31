@@ -36,7 +36,7 @@ const getNicknameById = async nickname_id => {
 const addNickname = async nickname => {
   try {
     const [nickname_id] = await db(nicknames)
-      .returning("nicname_id")
+      .returning("nickname_id")
       .insert(nickname);
     const newNick = await getNicknameById(nickname_id);
     return newNick;
