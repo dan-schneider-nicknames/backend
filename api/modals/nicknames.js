@@ -41,7 +41,7 @@ const addNickname = async nickname => {
     const newNick = await getNicknameById(nickname_id);
     return newNick;
   } catch (err) {
-    throw new Error("Nickname already exists");
+    throw err
   }
 };
 
