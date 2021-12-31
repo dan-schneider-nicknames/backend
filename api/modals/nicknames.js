@@ -61,4 +61,5 @@ module.exports = {
   addNickname,
   deleteNickname,
   getNicknames,
+  getNicknamesBy
 };
