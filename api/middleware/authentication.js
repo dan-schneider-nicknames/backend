@@ -65,8 +65,10 @@ const checkUsernameUnique = async (username, modals) => {
 
 const validateNickname = async (nickname, modals) => {
     try {
-        const isValid = nickname.includes("Dan") || nickname.includes("Schneider")
+        const isValid = nickname.includes("Dan") || nickname.includes("Schneider") 
+        const isntBad = !nickname.toLowerCase().includes("nigger") && !nickname.toLowerCase().includes("nigga")
         if (!isValid) throw new Error("Must include 'Dan' or 'Schneider'")
+        if (!isntBad) throw new Error("Please refrain from using such language")
         const similarNicknames = await modals.Nicknames.getNicknamesBy({ nickname })
         similarNicknames.forEach(n => {
             if (n.nickname === nickname) throw new Error("Nickname already exists");
