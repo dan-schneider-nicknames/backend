@@ -2,7 +2,8 @@ const {
   GraphQLNonNull,
   GraphQLString,
   GraphQLID,
-  GraphQLInt
+  GraphQLInt,
+  GraphQLList
 } = require("graphql");
 const { NicknameType } = require("../types")
 const {
@@ -46,6 +47,24 @@ const nicknameMutations = {
       nickname_id: { type: new GraphQLNonNull(GraphQLID) }
     },
     resolve: likeNickResolver
+  },
+  removeFouls: {
+    name: "removeFouls",
+    type: new GraphQLList(NicknameType),
+    args: {
+      nickname: { type: new GraphQLNonNull(GraphQLString) }
+    }, 
+    resolve: async (parent, args, context) => {
+      try {
+        const {nickname} = args
+        const {modals} = context
+        const {removeFoulNames} = modals.Nicknames
+        const removedNicknames = await removeFoulNames(nickname)
+        return removedNicknames
+      } catch(err) {
+        throw err
+      }
+    }
   }
 }
 
