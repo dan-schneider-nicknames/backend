@@ -5,15 +5,15 @@ const getLike = like => {
   return db(likes).where(like);
 };
 
+const removeLike = like => getLike(like).del()
+
+const addLike = like => db(likes).returning("like_id").insert(like)
+
 const likeNickname = like => {
   getLike(like)
     .then(([likedBefore]) => {
-      if (likedBefore) {
-        return getLike(like).del();
-      } else {
-        return db(likes).returning("like_id").insert(like);
-      }
-  });
+      return likedBefore ? removeLike(like) : addLike(like)
+    });
 };
 
 module.exports = {
