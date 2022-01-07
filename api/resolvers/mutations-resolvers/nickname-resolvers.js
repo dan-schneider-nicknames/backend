@@ -28,7 +28,12 @@ const updateNickResolver = async (parent, args, context) => {
 const deleteNickResolver = async (parent, args, context) => {
   try {
     const { nickname_id } = args;
-    const { deleteNickname } = context.modals.Nicknames
+    const { deleteNickname, getNicknameById } = context.modals.Nicknames
+    const { user_id } = context.user
+    const toBeDeleted = await getNicknameById(nickname_id)
+    if (user_id !== toBeDeleted.user_id) {
+      throw new Error("You can't delete another persons nicknames")
+    }
     const removedNickname = await deleteNickname(nickname_id);
     return removedNickname
   } catch(err) {
