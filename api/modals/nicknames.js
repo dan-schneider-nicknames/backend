@@ -14,6 +14,15 @@ const getUserNicknames = async user_id => {
   }
 };
 
+const removeFoulNames = async ( string ) => {
+  try{
+     const bad = await getNicknamesBy({ nickname: string }).returning("nickname");
+     console.log(bad)
+     return bad;
+  } catch (err){
+    throw err;
+  }
+};
 
 const getNicknameLikes = async nickname_id => {
   try {
@@ -60,6 +69,7 @@ module.exports = {
   getNicknameById,
   addNickname,
   deleteNickname,
+  removeFoulNames,
   getNicknames,
   getNicknamesBy
 };

@@ -2,7 +2,7 @@ const {
   GraphQLNonNull,
   GraphQLString,
   GraphQLID,
-  GraphQLInt
+  GraphQLInt,
 } = require("graphql");
 const { NicknameType } = require("../types")
 const {
@@ -46,7 +46,7 @@ const nicknameMutations = {
       nickname_id: { type: new GraphQLNonNull(GraphQLID) }
     },
     resolve: likeNickResolver
-  }
+  },
 }
 
 module.exports = nicknameMutations

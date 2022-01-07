@@ -40,6 +40,7 @@ const paginate = async (data, page) => {
       -pagelength,
       data.length
     );
+    lastData.push({nickname: "Last Nickname", nickname_id: -10, user_id: -2})
     return lastData;
   }
 }

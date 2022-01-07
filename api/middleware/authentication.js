@@ -1,6 +1,5 @@
-// const axios = require('axios')
+
 const { MAIL_EMAIL } = process.env;
-// const verifyURL = EMAIL_API_URL
 const transporter = require("./mail")
 const mailMessage = {
   from: MAIL_EMAIL,
@@ -35,7 +34,6 @@ const sendResetToken = (resetToken, to) => {
 
 const signupValidation = async (modals, {email, username}) => {
     try{
-        // await checkEmailIsValid(email)
         await checkEmailUnique(email, modals)
         await checkUsernameUnique(username, modals)
     } catch(err) {
@@ -43,12 +41,6 @@ const signupValidation = async (modals, {email, username}) => {
     }
 }
 
-// const checkEmailIsValid = async email => {
-//     const exists = await axios.get(verifyURL + email)
-//     if (!exists.data.status) {
-//         throw new Error("Not a valid email")
-//     }
-// }
 
 const checkEmailUnique = async (email, modals) => {
     const oldUser = await modals.Users.getUserByEmail(email);
@@ -65,8 +57,10 @@ const checkUsernameUnique = async (username, modals) => {
 
 const validateNickname = async (nickname, modals) => {
     try {
-        const isValid = nickname.includes("Dan") || nickname.includes("Schneider")
+        const isValid = nickname.includes("Dan") || nickname.includes("Schneider") 
+        const isntBad = !nickname.toLowerCase().includes("nigger") && !nickname.toLowerCase().includes("nigga")
         if (!isValid) throw new Error("Must include 'Dan' or 'Schneider'")
+        if (!isntBad) throw new Error("Please refrain from using such language")
         const similarNicknames = await modals.Nicknames.getNicknamesBy({ nickname })
         similarNicknames.forEach(n => {
             if (n.nickname === nickname) throw new Error("Nickname already exists");
