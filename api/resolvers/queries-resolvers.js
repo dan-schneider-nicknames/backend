@@ -4,12 +4,12 @@ const { promisify } = require("util")
 
 const nicknamesQueryResolver = async (parent, args, context) => {
   try {
-    const { page , sortBy } = args;
+    const { page , ranked } = args;
     const { user, modals } = context
     const { getNicknames, getNicknameLikes } = modals.Nicknames
     if (!user) throw new Error("not authorized");
     const nicknames = await getNicknames();
-    // if (!sortBy) return paginate(nicknames, page)
+    if (!ranked) return paginate(nicknames, page)
     const nicknamesWithLikes = await Promise.all(
       nicknames.map(async n => ({
         ...n,

@@ -15,8 +15,8 @@ const query = new GraphQLObjectType({
     nicknames: {
       type: new GraphQLList(NicknameType),
       args: {
-        sortBy: {
-          type: GraphQLBoolean
+        ranked: {
+          type: new GraphQLNonNull(GraphQLBoolean)
         },
         page: { type: new GraphQLNonNull(GraphQLInt) },
       },
